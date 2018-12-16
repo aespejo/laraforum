@@ -35,7 +35,7 @@ class ForumsController extends Controller
                 //     }
                 // }
                 // $discussions = $this->filter_discussion(true);
-                $discussions = Discussion::where('discussions.user_id', Auth::id())->where('replies.best_answer', 1)
+                $discussions = Discussion::where('replies.best_answer', 1)
                     ->leftJoin('replies', 'replies.discussion_id', '=', 'discussions.id')
                     ->select('discussions.*')->groupBy('discussions.id')
                     ->orderBy('created_at', 'desc')->paginate(3);
@@ -58,7 +58,7 @@ class ForumsController extends Controller
                 //     }
                 // }
                 // $discussions = $this->filter_discussion(false);
-               $discussions = Discussion::where('discussions.user_id', Auth::id())->where('replies.best_answer', 0)
+               $discussions = Discussion::where('replies.best_answer', 0)
                     ->leftJoin('replies', 'replies.discussion_id', '=', 'discussions.id')
                     ->select('discussions.*')->groupBy('discussions.id')
                     ->orderBy('created_at', 'desc')->paginate(3);
