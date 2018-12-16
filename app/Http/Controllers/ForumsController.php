@@ -34,7 +34,13 @@ class ForumsController extends Controller
                 //         $discussions = new Paginator($answered, 3);
                 //     }
                 // }
-                $discussions = $this->filter_discussion(true);
+                // $discussions = $this->filter_discussion(true);
+                $discussions = Discussion::where('discussions.user_id', Auth::id())->where('replies.best_answer', 0)
+                    ->leftJoin('replies', 'replies.discussion_id', '=', 'discussions.id')
+                    ->select('discussions.*')->groupBy('discussions.id')
+                    ->orderBy('created_at', 'desc')->paginate(3);
+                                            
+
                 break;
             case 'unanswered':
                 // option 1
@@ -51,7 +57,12 @@ class ForumsController extends Controller
                 //         $discussions = new Paginator($unanswered, 3);
                 //     }
                 // }
-                $discussions = $this->filter_discussion(false);
+                // $discussions = $this->filter_discussion(false);
+               $discussions = Discussion::where('discussions.user_id', Auth::id())->where('replies.best_answer', 0)
+                    ->leftJoin('replies', 'replies.discussion_id', '=', 'discussions.id')
+                    ->select('discussions.*')->groupBy('discussions.id')
+                    ->orderBy('created_at', 'desc')->paginate(3);
+
                 break;
             default:
                 $discussions = Discussion::orderBy('created_at', 'desc')->paginate(3);
@@ -85,9 +96,10 @@ class ForumsController extends Controller
                 }   
             }
             if(count($result)) {
-                $discussions = new Paginator($result, 3);
+                
             }
         }
+        $discussions = new Paginator($result, 3);
 
         return $discussions;
     }

@@ -37,11 +37,11 @@
                 </div>
             </div>
         @endforeach
-        @if($discussions)
-            <div class="text-center">
-                {!! $discussions->appends( Request::query() )->render() !!}
-            </div>
-        @endif
+
+        <div class="text-center">
+            {!! $discussions->appends( Request::query() )->links() !!}
+        </div>
+
     @else
         <div class="panel panel-default">
             <div class="panel-heading">
